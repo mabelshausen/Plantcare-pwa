@@ -1,7 +1,6 @@
 "use strict"
 
 const store = localforage.createInstance({name: "plantcare"});
-const baseUrl = "http://192.168.0.172:8000/api/plants/";
 var plant;
 
 document.addEventListener("DOMContentLoaded", init);
