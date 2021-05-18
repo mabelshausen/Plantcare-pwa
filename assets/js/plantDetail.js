@@ -20,11 +20,27 @@ function fillPlantDetails() {
     plantLastWatered.appendChild(document.createTextNode(`Last watered on ${new Date(plant.lastWatered).toLocaleDateString()}`));
 }
 
+function navigatePlantEdit(plantId) {
+    window.location = `plantForm.html?id=${plantId}`;
+}
+
+function navigatePlantDelete(plantId) {
+    window.location = `deletePlant.html?id=${plantId}`;
+}
+
 function init() {
     const plantId = (new URLSearchParams(window.location.search)).get('id');
+
     store.getItem("plants").then(function(plants) {
         plant = plants.find(p => p.id == plantId);
     }).then(function() {
         fillPlantDetails();
+    });
+
+    document.getElementById("edit").addEventListener("click", function(ev) {
+        navigatePlantEdit(plantId);
+    });
+    document.getElementById("delete").addEventListener("click", function(ev) {
+        navigatePlantDelete(plantId);
     });
 }
