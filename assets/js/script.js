@@ -57,10 +57,18 @@ function navigatePlantDetail(plantId) {
     window.location = `plantDetail.html?id=${plantId}`;
 }
 
+function navigatePlantForm() {
+    window.location = "plantForm.html";
+}
+
 function init() {
     registerServiceWorker();
 
     getPlants();
+
+    document.getElementById("add").addEventListener("click", function(ev) {
+        navigatePlantForm();
+    });
 }
 
 function registerServiceWorker() {
