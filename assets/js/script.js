@@ -26,6 +26,9 @@ function fillPlantList(plants) {
     plants.forEach(function(plant) {
         var listItem = document.createElement("li");
         plantlist.append(listItem);
+        listItem.addEventListener("click", function(ev) {
+            navigatePlantDetail(plant.id);
+        });
 
         var plantName = document.createElement("div");
         plantName.appendChild(document.createTextNode(plant.name));
@@ -48,6 +51,10 @@ function nextWatering(plant) {
     } else {
         return "Water now!"
     }
+}
+
+function navigatePlantDetail(plantId) {
+    window.location = `plantDetail.html?id=${plantId}`;
 }
 
 function init() {
