@@ -2,7 +2,7 @@
 
 const store = localforage.createInstance({name: "plantcare"});
 const baseUrl = "http://192.168.0.172:8000/api/plants/";
-var plant;
+var plant = {};
 var isEdit;
 
 document.addEventListener("DOMContentLoaded", init);
@@ -15,7 +15,30 @@ function fillPlantForm() {
 }
 
 function savePlant() {
-    
+    const form = document.getElementById('form');
+
+    plant.name = form.elements['name'].value;
+    plant.sciName = form.elements['sciName'].value;
+    plant.age = form.elements['age'].value;
+    plant.waterFreq = form.elements['waterFreq'].value
+
+    if (isEdit) {
+        editPlant();
+    } else {
+        postPlant();
+    }
+}
+
+function editPlant() {
+    // PUT request to api with plant.id
+    // update localForage store
+    window.location = `plantDetail.html?id=${plant.id}`;
+}
+
+function postPlant() {
+    // POST request to api
+    // update localForage store
+    // navigate to new plant
 }
 
 function navigateBack() {
