@@ -1,9 +1,59 @@
 "use strict"
 
+const store = localforage.createInstance({name: "plantcare"});
+const baseUrl = "http://192.168.0.172:8000/api/";
+
 document.addEventListener("DOMContentLoaded", init);
+
+function getPlants() {
+    store.getItem("plants").then(function(plants) {
+        plants === null ? downloadPlants() : fillPlantList(plants);
+    });
+}
+
+function downloadPlants() {
+    fetch(baseUrl + "plants")
+    .then(response => response.json())
+    .then(function(res) {
+        store.setItem("plants", res);
+        fillPlantList(res);
+    });
+}
+
+function fillPlantList(plants) {
+    const plantlist = document.getElementById("plantlist");
+
+    plants.forEach(function(plant) {
+        var listItem = document.createElement("li");
+        plantlist.append(listItem);
+
+        var plantName = document.createElement("div");
+        plantName.appendChild(document.createTextNode(plant.name));
+
+        var waterIn = document.createElement("div");
+        waterIn.appendChild(document.createTextNode(nextWatering(plant)));
+
+        listItem.appendChild(plantName);
+        listItem.appendChild(waterIn);
+    });
+}
+
+function nextWatering(plant) {
+    const timeDiff = (new Date()) - (new Date(plant.lastWatered));
+    const hoursSinceLastWatering = Math.ceil(timeDiff / (1000 * 60 * 60));
+    const  maxHoursBetweenWaterings = plant.waterFreq * 24 
+
+    if (maxHoursBetweenWaterings > hoursSinceLastWatering) {
+        return `Water in: ${maxHoursBetweenWaterings - hoursSinceLastWatering} hours`;
+    } else {
+        return "Water now!"
+    }
+}
 
 function init() {
     registerServiceWorker();
+
+    getPlants();
 }
 
 function registerServiceWorker() {
