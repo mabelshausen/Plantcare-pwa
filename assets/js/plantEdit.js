@@ -14,6 +14,10 @@ function fillPlantForm() {
     document.getElementById("waterFreq").setAttribute("value", plant.waterFreq);
 }
 
+function savePlant() {
+    
+}
+
 function navigateBack() {
     if (isEdit) {
         window.location  = `plantDetail.html?id=${plant.id}`;
@@ -34,7 +38,8 @@ function init() {
         });
     }
 
-    document.getElementById("save").addEventListener("click", function(ev) {
+    document.getElementById("form").addEventListener("submit", function(ev) {
+        ev.preventDefault();
         savePlant();
     });
     document.getElementById("cancel").addEventListener("click", function(ev) {

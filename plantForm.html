@@ -12,16 +12,18 @@
 <body>
     <div>
         <h2>Edit Plant</h2>
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name"><br>
-        <label for="sciName">Biological Name:</label><br>
-        <input type="text" id="sciName" name="sciName"><br>
-        <label for="age">Age (years):</label><br>
-        <input type="number" id="age" name="age"><br>
-        <label for="waterFreq">Water every ... days:</label><br>
-        <input type="number" id="waterFreq" name="waterFreq"><br><br>
-        <button id="save">Save</button>
-        <button id="cancel">Cancel</button>
+        <form method="post" id="form">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br>
+            <label for="sciName">Biological Name:</label><br>
+            <input type="text" id="sciName" name="sciName"><br>
+            <label for="age">Age (years):</label><br>
+            <input type="number" id="age" name="age" required><br>
+            <label for="waterFreq">Water every ... days:</label><br>
+            <input type="number" id="waterFreq" name="waterFreq" required><br><br>
+            <input type="submit" value="Save">
+            <button id="cancel">Cancel</button>
+        </form>
     </div>
 </body>
 </html>
