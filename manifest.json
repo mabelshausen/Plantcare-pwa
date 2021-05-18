@@ -1,0 +1,9 @@
+{
+    "name": "PlantCare",
+    "short_name": "PlantCare",
+    "theme_color": "#42bc4b",
+    "background_color": "#42bc4b",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/"
+  }
