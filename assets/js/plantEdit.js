@@ -14,6 +14,14 @@ function fillPlantForm() {
     document.getElementById("waterFreq").setAttribute("value", plant.waterFreq);
 }
 
+function navigateBack() {
+    if (isEdit) {
+        window.location  = `plantDetail.html?id=${plant.id}`;
+    } else {
+        window.location  = "index.html";
+    }
+}
+
 function init() {
     const plantId = (new URLSearchParams(window.location.search)).get('id');
     isEdit = (plantId !== null);
