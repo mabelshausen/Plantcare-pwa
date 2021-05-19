@@ -2,7 +2,7 @@
 
 const store = localforage.createInstance({name: "plantcare"});
 const baseUrl = "http://192.168.0.172:8000/api/plants/";
-var plant = {};
+var plant;
 var isEdit;
 
 document.addEventListener("DOMContentLoaded", init);
@@ -22,6 +22,7 @@ function savePlant() {
     plant.age = form.elements['age'].value;
     plant.waterFreq = form.elements['waterFreq'].value
 
+    console.log(JSON.stringify(plant));
     if (isEdit) {
         editPlant();
     } else {
@@ -30,15 +31,54 @@ function savePlant() {
 }
 
 function editPlant() {
-    // PUT request to api with plant.id
-    // update localForage store
-    window.location = `plantDetail.html?id=${plant.id}`;
+    fetch(baseUrl + plant.id, {
+        method: "PUT",
+        body: JSON.stringify(plant),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(() => {
+        store.getItem("plants").then(function(plants) {
+            var index = plants.findIndex(p => p.id  == plant.id);
+            plants[index] = plant;
+            store.setItem("plants", plants);
+        });
+
+        window.location = `plantDetail.html?id=${plant.id}`;
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
 }
 
 function postPlant() {
-    // POST request to api
-    // update localForage store
-    // navigate to new plant
+    plant.lastWatered = new Date().toISOString();
+    plant.room_id = 1;
+
+    fetch(baseUrl, {
+        method: "POST",
+        body: JSON.stringify(plant),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(respone => respone.json())
+    .then(res => {
+        plant.id = res;
+
+        store.getItem("plants").then(function(plants) {
+            plants.push(plant);
+            store.setItem("plants", plants);
+        });
+
+        window.location = `plantDetail.html?id=${plant.id}`;
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
 }
 
 function navigateBack() {
@@ -59,6 +99,8 @@ function init() {
         }).then(function() {
             fillPlantForm();
         });
+    } else {
+        plant = {};
     }
 
     document.getElementById("form").addEventListener("submit", function(ev) {
