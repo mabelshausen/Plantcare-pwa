@@ -17,6 +17,13 @@ function fillRoomList(rooms) {
         roomName.textContent = room.name;
         roomList.appendChild(roomName);
 
+        var roomEdit = document.createElement("button");
+        roomEdit.textContent = "Edit";
+        roomEdit.addEventListener("click", function() {
+            navigateRoomEdit(room.id);
+        });
+        roomList.appendChild(roomEdit);
+
         var plantList = document.createElement("ul");
         roomList.appendChild(plantList);
 
@@ -43,6 +50,18 @@ function navigatePlantDetail(plantId) {
     window.location = `plantDetail.html?id=${plantId}`;
 }
 
+function navigateRoomAdd() {
+    window.location = "roomForm.html";
+}
+
+function navigateRoomEdit(roomId) {
+    window.location = `roomForm.html?id=${roomId}`;
+}
+
 function init() {
     getRooms();
+
+    document.getElementById("add").addEventListener("click", function() {
+        navigateRoomAdd();
+    });
 }
