@@ -20,6 +20,20 @@ function downloadPlants() {
     });
 }
 
+function getRooms() {
+    store.getItem("rooms").then(function(rooms) {
+        if (rooms === null) downloadRooms();
+    });
+}
+
+function downloadRooms() {
+    fetch(baseUrl + "rooms")
+    .then(response => response.json())
+    .then(function(res) {
+        store.setItem("rooms", res);
+    });
+}
+
 function fillPlantList(plants) {
     const plantlist = document.getElementById("plantlist");
 
@@ -65,6 +79,7 @@ function init() {
     registerServiceWorker();
 
     getPlants();
+    getRooms();
 
     document.getElementById("add").addEventListener("click", function(ev) {
         navigatePlantForm();
