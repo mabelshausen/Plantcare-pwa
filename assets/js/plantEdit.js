@@ -31,7 +31,6 @@ function savePlant() {
     plant.waterFreq = form.elements['waterFreq'].value;
     plant.room_id = form.elements['room_id'].value;
 
-    console.log(JSON.stringify(plant));
     if (isEdit) {
         editPlant();
     } else {
