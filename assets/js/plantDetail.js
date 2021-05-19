@@ -1,6 +1,7 @@
 "use strict"
 
 const store = localforage.createInstance({name: "plantcare"});
+const baseUrl = "http://192.168.0.172:8000/api/plants/";
 var plant;
 
 document.addEventListener("DOMContentLoaded", init);
@@ -24,6 +25,32 @@ function fillPlantDetails() {
     });
 }
 
+function waterPlant() {
+    var oldWaterTime = plant.lastWatered;
+    plant.lastWatered = new Date().toISOString();
+
+    fetch(baseUrl + plant.id, {
+        method: "PUT",
+        body: JSON.stringify(plant),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        }
+    }).then(() => {
+        store.getItem("plants").then(function(plants) {
+            var index = plants.findIndex(p => p.id  == plant.id);
+            plants[index] = plant;
+            store.setItem("plants", plants);
+        });
+
+        document.getElementById("plantLastWatered").textContent = `Last watered on ${new Date(plant.lastWatered).toLocaleDateString()}`;
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+        plant.lastWatered = oldWaterTime;
+    });
+}
+
 function navigatePlantEdit(plantId) {
     window.location = `plantForm.html?id=${plantId}`;
 }
@@ -41,6 +68,9 @@ function init() {
         fillPlantDetails();
     });
 
+    document.getElementById("water").addEventListener("click", function(ev) {
+        waterPlant();
+    });
     document.getElementById("edit").addEventListener("click", function(ev) {
         navigatePlantEdit(plantId);
     });
