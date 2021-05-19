@@ -11,12 +11,17 @@ function fillPlantDetails() {
     const plantAge = document.getElementById("plantAge");
     const plantWaterFreq = document.getElementById("plantWaterFreq");
     const plantLastWatered = document.getElementById("plantLastWatered");
+    const room = document.getElementById("room");
 
     plantName.appendChild(document.createTextNode(plant.name));
     plantSciName.appendChild(document.createTextNode(plant.sciName));
     plantAge.appendChild(document.createTextNode(`${plant.age} years old`));
     plantWaterFreq.appendChild(document.createTextNode(`Water every ${plant.waterFreq} days`));
     plantLastWatered.appendChild(document.createTextNode(`Last watered on ${new Date(plant.lastWatered).toLocaleDateString()}`));
+
+    store.getItem("rooms").then(function(rooms) {
+        room.appendChild(document.createTextNode(`Room: ${rooms[rooms.findIndex(r => r.id == plant.room_id)].name}`));
+    });
 }
 
 function navigatePlantEdit(plantId) {
