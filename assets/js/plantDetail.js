@@ -51,12 +51,25 @@ function waterPlant() {
     });
 }
 
-function navigatePlantEdit(plantId) {
-    window.location = `plantForm.html?id=${plantId}`;
+function deletePlant() {
+    fetch(baseUrl + plant.id, {
+        method: "DELETE"
+    }).then(() => {
+        store.getItem("plants").then(function(plants) {
+            var index = plants.findIndex(p => p.id  == plant.id);
+            plants.splice(index, 1);
+            store.setItem("plants", plants);
+        });
+
+        window.location = "index.html";
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
 }
 
-function navigatePlantDelete(plantId) {
-    window.location = `deletePlant.html?id=${plantId}`;
+function navigatePlantEdit(plantId) {
+    window.location = `plantForm.html?id=${plantId}`;
 }
 
 function init() {
@@ -75,6 +88,6 @@ function init() {
         navigatePlantEdit(plantId);
     });
     document.getElementById("delete").addEventListener("click", function(ev) {
-        navigatePlantDelete(plantId);
+        deletePlant(plantId);
     });
 }
