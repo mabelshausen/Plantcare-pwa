@@ -89,9 +89,23 @@ function navigateBack() {
     }
 }
 
+function fillSelect() {
+    var select = document.getElementById("room_id");
+    store.getItem("rooms").then(function(rooms) {
+        rooms.forEach(room => {
+            var el = document.createElement("option");
+            el.textContent = room.name;
+            el.value = room.id;
+            select.appendChild(el);
+        });
+    });
+}
+
 function init() {
     const plantId = (new URLSearchParams(window.location.search)).get('id');
     isEdit = (plantId !== null);
+
+    fillSelect();
 
     if (isEdit) {
         store.getItem("plants").then(function(plants) {
