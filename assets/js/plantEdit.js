@@ -12,6 +12,14 @@ function fillPlantForm() {
     document.getElementById("sciName").setAttribute("value", plant.sciName);
     document.getElementById("age").setAttribute("value", plant.age);
     document.getElementById("waterFreq").setAttribute("value", plant.waterFreq);
+    var select = document.getElementById("room_id");
+    for (var i = 0; i < select.options.length; i++) {
+        if (select.options[i].value == plant.room_id) {
+            select.options[i].selected = true;
+            break;
+        }
+
+    }
 }
 
 function savePlant() {
@@ -20,7 +28,8 @@ function savePlant() {
     plant.name = form.elements['name'].value;
     plant.sciName = form.elements['sciName'].value;
     plant.age = form.elements['age'].value;
-    plant.waterFreq = form.elements['waterFreq'].value
+    plant.waterFreq = form.elements['waterFreq'].value;
+    plant.room_id = form.elements['room_id'].value;
 
     console.log(JSON.stringify(plant));
     if (isEdit) {
@@ -55,7 +64,6 @@ function editPlant() {
 
 function postPlant() {
     plant.lastWatered = new Date().toISOString();
-    plant.room_id = 1;
 
     fetch(baseUrl, {
         method: "POST",
