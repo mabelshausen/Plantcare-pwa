@@ -2,6 +2,7 @@
 
 const store = localforage.createInstance({name: "plantcare"});
 const baseUrl = "http://192.168.0.172:8000/api/";
+const publicKey = 'BIuCnGhIL7_peUkT7MTVcjYn97MqSR3ye-7_c6p3McLP0Sg9g3Z1IU_Nrl8sdUh081AgGSI7SdbP57u-dqRy6XE';
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -105,4 +106,32 @@ function registerForNotifications() {
             console.log("Notification permission not granted.");
         }
     });
+}
+
+function registerPush() {
+    let subscribeOptions = {
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicKey)
+    };
+
+    navigator.serviceWorker.ready.then(reg => {
+        return reg.pushManager.subscribe(subscribeOptions);
+    }).then(sub => {
+        console.log(JSON.stringify(sub));
+    });
+}
+
+function urlBase64ToUint8Array(base64String) {
+    var padding = '='.repeat((4 - base64String.length % 4) % 4);
+    var base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    var rawData = window.atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
 }
