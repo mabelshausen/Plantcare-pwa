@@ -90,8 +90,19 @@ function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register("/sw.js").then(function(res) {
             console.log("Successfully registered service worker with scope:", res.scope);
+            registerForNotifications();
         }).catch(function(err) {
             console.log("Error registering service worker:", err);
         });
     }
+}
+
+function registerForNotifications() {
+    Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+            registerPush();
+        } else {
+            console.log("Notification permission not granted.");
+        }
+    });
 }
