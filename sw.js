@@ -10,3 +10,8 @@ self.addEventListener("fetch", function(e) {
             return new Response("<h1>Content not available</h1>", {headers : {"Content-Type": "text/html"}});
         }));
 });
+
+self.addEventListener("push", function(e) {
+    let msg = e.data.text();
+    self.registration.showNotification(msg);
+});
