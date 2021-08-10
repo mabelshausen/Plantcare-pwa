@@ -12,6 +12,8 @@ self.addEventListener("fetch", function(e) {
 });
 
 self.addEventListener("push", function(e) {
-    let msg = e.data.text();
+    const data = e.data.json();
+    const msg = `${data["plant"]["name"]} needs to be watered!`;
+    
     self.registration.showNotification(msg);
 });
