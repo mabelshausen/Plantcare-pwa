@@ -13,7 +13,7 @@ self.addEventListener("fetch", function(e) {
 
 self.addEventListener("push", function(e) {
     const data = e.data.json();
-    const msg = `${data["plant"]["name"]} needs to be watered!`;
-    
+    const msg = `${data["plant"]} needs to be watered!`;
+
     self.registration.showNotification(msg);
 });
