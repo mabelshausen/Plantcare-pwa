@@ -2,6 +2,7 @@
 
 const store = localforage.createInstance({name: "plantcare"});
 const baseUrl = "http://192.168.0.172:8000/api/";
+const notificationsUrl = "http://localhost:8001/";
 const publicKey = 'BIuCnGhIL7_peUkT7MTVcjYn97MqSR3ye-7_c6p3McLP0Sg9g3Z1IU_Nrl8sdUh081AgGSI7SdbP57u-dqRy6XE';
 
 document.addEventListener("DOMContentLoaded", init);
@@ -117,7 +118,15 @@ function registerPush() {
     navigator.serviceWorker.ready.then(reg => {
         return reg.pushManager.subscribe(subscribeOptions);
     }).then(sub => {
-        console.log(JSON.stringify(sub));
+        registerSubscription(sub);
+    });
+}
+
+function registerSubscription(sub) {
+    fetch(notificationsUrl + "/register", {
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(sub) 
     });
 }
 
