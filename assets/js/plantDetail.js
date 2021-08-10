@@ -2,6 +2,7 @@
 
 const store = localforage.createInstance({name: "plantcare"});
 const baseUrl = "http://192.168.0.172:8000/api/plants/";
+const notificationsUrl = "http://localhost:8001/";
 var plant;
 
 document.addEventListener("DOMContentLoaded", init);
@@ -44,11 +45,21 @@ function waterPlant() {
         });
 
         document.getElementById("plantLastWatered").textContent = `Last watered on ${new Date(plant.lastWatered).toLocaleDateString()}`;
+    }).then(() => {
+        fetch(notificationsUrl + "water", {
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({plant: plant, timestamp: nextWatering()})
+        });
     })
     .catch((error) => {
         console.error("Error:", error);
         plant.lastWatered = oldWaterTime;
     });
+}
+
+function nextWatering() {
+    return new Date() + (plant.waterFreq * 60 * 60 * 1000);
 }
 
 function deletePlant() {
