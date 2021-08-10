@@ -123,7 +123,7 @@ function registerPush() {
 }
 
 function registerSubscription(sub) {
-    fetch(notificationsUrl + "/register", {
+    fetch(notificationsUrl + "register", {
         method: 'POST', 
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(sub) 
