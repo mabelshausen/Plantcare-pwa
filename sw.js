@@ -15,5 +15,5 @@ self.addEventListener("push", function(e) {
     const data = e.data.json();
     const msg = `${data["plant"]} needs to be watered!`;
 
-    self.registration.showNotification(msg);
+    self.registration.showNotification(msg, { showTrigger: new TimeStampTrigger(data["timestamp"]) });
 });
