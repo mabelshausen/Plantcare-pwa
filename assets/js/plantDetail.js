@@ -49,7 +49,7 @@ function waterPlant() {
         fetch(notificationsUrl + "water", {
             method: 'POST', 
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({plant: plant, timestamp: nextWatering()})
+            body: JSON.stringify({plant: plant.name, timestamp: nextWatering()})
         });
     })
     .catch((error) => {
